@@ -206,7 +206,7 @@ function Splash() {
       <p style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#3a3a4a', fontSize: '0.72rem', marginBottom: '3rem', maxWidth: '260px', lineHeight: 1.6 }}>
         scan kandi · see its journey<br />connect with the last soul who wore it
       </p>
-      <button onClick={() => navigate('/browse')} style={{
+      <button onClick={() => navigate('/scan')} style={{
         background: 'transparent', border: '2px solid #ff006e', borderRadius: '60px', padding: '1rem 3rem',
         color: '#ff006e', fontSize: '1rem', fontFamily: "'Permanent Marker', cursive", cursor: 'pointer',
         boxShadow: '0 0 20px #ff006e30, inset 0 0 20px #ff006e10', transition: 'all 0.3s', letterSpacing: '1px',
@@ -606,6 +606,237 @@ function CommunityPage() {
 }
 
 /* ============================================================
+   QR SCANNER
+   ============================================================ */
+function QRScanner() {
+  const navigate = useNavigate();
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [scanning, setScanning] = useState(true);
+  const [error, setError] = useState(null);
+  const [manualId, setManualId] = useState('');
+  const streamRef = useRef(null);
+  const animFrameRef = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+        });
+        streamRef.current = stream;
+        if (videoRef.current && active) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+          requestAnimationFrame(scanFrame);
+        }
+      } catch (err) {
+        console.error('Camera error:', err);
+        setError('Camera access denied or unavailable. You can enter a kandi ID manually below.');
+        setScanning(false);
+      }
+    }
+
+    function scanFrame() {
+      if (!active || !videoRef.current || !canvasRef.current) return;
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        try {
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          // Use BarcodeDetector API if available (Chrome, Edge, Android)
+          if ('BarcodeDetector' in window) {
+            const detector = new BarcodeDetector({ formats: ['qr_code'] });
+            detector.detect(video).then(barcodes => {
+              if (barcodes.length > 0 && active) {
+                const url = barcodes[0].rawValue;
+                handleScanResult(url);
+                return;
+              }
+              if (active) animFrameRef.current = requestAnimationFrame(scanFrame);
+            }).catch(() => {
+              if (active) animFrameRef.current = requestAnimationFrame(scanFrame);
+            });
+          } else {
+            // Fallback: check every 500ms with BarcodeDetector not available message
+            setError('Your browser doesn\'t support camera scanning. Enter a kandi ID manually below, or try opening this page in Chrome.');
+            setScanning(false);
+          }
+        } catch (e) {
+          if (active) animFrameRef.current = requestAnimationFrame(scanFrame);
+        }
+      } else {
+        if (active) animFrameRef.current = requestAnimationFrame(scanFrame);
+      }
+    }
+
+    startCamera();
+
+    return () => {
+      active = false;
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(t => t.stop());
+      }
+    };
+  }, []);
+
+  function handleScanResult(url) {
+    setScanning(false);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(t => t.stop());
+    }
+    // Extract kandi ID from URL
+    const match = url.match(/\/k\/(KD-\d+)/i) || url.match(/(KD-\d+)/i);
+    if (match) {
+      navigate(`/k/${match[1].toUpperCase()}`);
+    } else {
+      // Try to open the URL directly if it's a KandiDrop link
+      if (url.includes('kandidrop')) {
+        const parts = url.split('/k/');
+        if (parts[1]) {
+          navigate(`/k/${parts[1].split('/')[0].split('?')[0].toUpperCase()}`);
+          return;
+        }
+      }
+      setError(`Scanned: "${url}" — doesn't look like a KandiDrop code. Try another one.`);
+      setScanning(true);
+    }
+  }
+
+  function handleManualSubmit() {
+    const id = manualId.trim().toUpperCase();
+    if (id) {
+      const formatted = id.startsWith('KD-') ? id : `KD-${id.replace(/\D/g, '').padStart(4, '0')}`;
+      navigate(`/k/${formatted}`);
+    }
+  }
+
+  return (
+    <Page style={{ padding: 0, position: 'relative' }}>
+      {/* Back button */}
+      <button onClick={() => {
+        if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop());
+        navigate('/browse');
+      }} style={{
+        position: 'absolute', top: '1rem', left: '1rem', zIndex: 20,
+        background: '#0007', border: 'none', color: '#fff', borderRadius: '50%',
+        width: 40, height: 40, fontSize: '1.2rem', cursor: 'pointer',
+        backdropFilter: 'blur(10px)',
+      }}>✕</button>
+
+      {/* Camera view */}
+      {scanning && (
+        <div style={{ position: 'relative', width: '100%', height: '60vh', overflow: 'hidden', background: '#000' }}>
+          <video ref={videoRef} style={{
+            width: '100%', height: '100%', objectFit: 'cover',
+          }} playsInline muted />
+          <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+          {/* Scan overlay */}
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <div style={{
+              width: '220px', height: '220px', position: 'relative',
+            }}>
+              {/* Corner brackets */}
+              {[[0,0],[1,0],[0,1],[1,1]].map(([x,y], i) => (
+                <div key={i} style={{
+                  position: 'absolute',
+                  [y === 0 ? 'top' : 'bottom']: -2,
+                  [x === 0 ? 'left' : 'right']: -2,
+                  width: 30, height: 30,
+                  borderTop: y === 0 ? '3px solid #ff006e' : 'none',
+                  borderBottom: y === 1 ? '3px solid #ff006e' : 'none',
+                  borderLeft: x === 0 ? '3px solid #ff006e' : 'none',
+                  borderRight: x === 1 ? '3px solid #ff006e' : 'none',
+                  boxShadow: '0 0 15px #ff006e40',
+                }} />
+              ))}
+              {/* Scanning line animation */}
+              <div style={{
+                position: 'absolute', left: 0, right: 0, height: '2px',
+                background: 'linear-gradient(90deg, transparent, #ff006e, transparent)',
+                boxShadow: '0 0 10px #ff006e',
+                animation: 'scanLine 2s ease-in-out infinite',
+              }} />
+            </div>
+          </div>
+
+          {/* Label */}
+          <div style={{
+            position: 'absolute', bottom: '1.5rem', left: 0, right: 0, textAlign: 'center',
+          }}>
+            <div style={{
+              display: 'inline-block', background: '#000a', backdropFilter: 'blur(10px)',
+              borderRadius: '12px', padding: '0.6rem 1.2rem',
+              color: '#fff', fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem',
+            }}>
+              Point camera at a KandiDrop QR code
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom section */}
+      <div style={{ padding: '1.5rem', background: '#07070f' }}>
+        {error && (
+          <div style={{
+            background: '#1a0020', borderRadius: '12px', padding: '1rem',
+            border: '1px solid #ff006e20', marginBottom: '1rem',
+          }}>
+            <p style={{ color: '#ff006e', fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.75rem', margin: 0 }}>
+              {error}
+            </p>
+          </div>
+        )}
+
+        <div style={{ marginBottom: '1rem' }}>
+          <Neon color="#7b2ff7" size="0.9rem" style={{ display: 'block', marginBottom: '0.8rem' }}>
+            or enter kandi ID manually
+          </Neon>
+          <div style={{ display: 'flex', gap: '0.6rem' }}>
+            <Field value={manualId} onChange={setManualId} placeholder="KD-0001" mb="0" />
+            <button onClick={handleManualSubmit} style={{
+              background: 'transparent', border: '2px solid #ff006e', borderRadius: '12px',
+              padding: '0 1.2rem', color: '#ff006e', fontFamily: "'Permanent Marker', cursive",
+              fontSize: '0.9rem', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
+            }}>GO</button>
+          </div>
+        </div>
+
+        <button onClick={() => {
+          if (streamRef.current) streamRef.current.getTracks().forEach(t => t.stop());
+          navigate('/browse');
+        }} style={{
+          width: '100%', background: 'linear-gradient(135deg, #0d0d18, #12121f)',
+          border: '1px solid #18182a', borderRadius: '14px', padding: '1rem',
+          color: '#00f5d4', fontFamily: "'Permanent Marker', cursive", fontSize: '0.85rem', cursor: 'pointer',
+        }}>📋 Browse all kandi instead</button>
+      </div>
+
+      <style>{`
+        @keyframes scanLine {
+          0% { top: 0; }
+          50% { top: calc(100% - 2px); }
+          100% { top: 0; }
+        }
+      `}</style>
+    </Page>
+  );
+}
+
+/* ============================================================
    APP + RENDER
    ============================================================ */
 function App() {
@@ -613,6 +844,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Splash />} />
+        <Route path="/scan" element={<QRScanner />} />
         <Route path="/browse" element={<Browse />} />
         <Route path="/k/:kandiId" element={<Journey />} />
         <Route path="/collection" element={<Collection />} />
