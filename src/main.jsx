@@ -328,7 +328,7 @@ function Journey() {
       const [kd, ch] = await Promise.all([getKandi(kandiId), getChain(kandiId)]);
       setKandi(kd); setChain(ch || []);
       if (currentUser) setAlreadyClaimed(await hasUserClaimed(kandiId, currentUser));
-    } catch { setError('Kandi not found'); } finally { setLoading(false); }
+    } catch (err) {   console.error(err);   setError(err?.message || JSON.stringify(err) || 'Kandi not found'); } finally {   setLoading(false); }
   }
 
   async function handleClaim() {
