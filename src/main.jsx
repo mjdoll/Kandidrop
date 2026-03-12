@@ -206,7 +206,7 @@ function Splash() {
       <p style={{ fontFamily: "'IBM Plex Mono', monospace", color: '#3a3a4a', fontSize: '0.72rem', marginBottom: '3rem', maxWidth: '260px', lineHeight: 1.6 }}>
         scan kandi · see its journey<br />connect with the last soul who wore it
       </p>
-      <button onClick={() => navigate('/scan')} style={{
+      <button onClick={() => navigate('/browse')} style={{
         background: 'transparent', border: '2px solid #ff006e', borderRadius: '60px', padding: '1rem 3rem',
         color: '#ff006e', fontSize: '1rem', fontFamily: "'Permanent Marker', cursive", cursor: 'pointer',
         boxShadow: '0 0 20px #ff006e30, inset 0 0 20px #ff006e10', transition: 'all 0.3s', letterSpacing: '1px',
