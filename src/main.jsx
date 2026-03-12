@@ -462,7 +462,7 @@ function Journey() {
           <Field value={ev} onChange={setEv} placeholder="Event (e.g. EDC, Coachella)" />
           <Field value={city} onChange={setCity} placeholder="City" mb="1rem" />
           <Field value={message} onChange={setMessage} placeholder="Drop your message 💜" mb="1rem" />
-          {error && <p style={{ color: '#ff006e', fontSize: '0.75rem', marginBottom: '0.8rem' }}>{error}</p>}
+         <Field value={message} onChange={setMessage} placeholder="Drop your message 💜" mb="1rem" />
           <div style={{ display: 'flex', gap: '0.8rem' }}>
             <button onClick={() => setShowForm(false)} style={{ flex: 1, background: '#0d0d18', border: '1px solid #18182a', borderRadius: '12px', padding: '0.8rem', color: '#444', fontFamily: "'IBM Plex Mono', monospace", cursor: 'pointer' }}>cancel</button>
             <button onClick={handleClaim} disabled={claiming} style={{
