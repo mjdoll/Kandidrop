@@ -460,9 +460,8 @@ function Journey() {
           <Neon color="#7b2ff7" size="1rem" style={{ display: 'block', marginBottom: '1rem' }}>claim this kandi</Neon>
           <Field value={ig} onChange={setIg} placeholder="@your_instagram" />
           <Field value={ev} onChange={setEv} placeholder="Event (e.g. EDC, Coachella)" />
-          <Field value={city} onChange={setCity} placeholder="City" mb="1rem" />
+          <Field value={city} onChange={setCity} placeholder="City" mb=/>
           <Field value={message} onChange={setMessage} placeholder="Drop your message 💜" mb="1rem" />
-         <Field value={message} onChange={setMessage} placeholder="Drop your message 💜" mb="1rem" />
           <div style={{ display: 'flex', gap: '0.8rem' }}>
             <button onClick={() => setShowForm(false)} style={{ flex: 1, background: '#0d0d18', border: '1px solid #18182a', borderRadius: '12px', padding: '0.8rem', color: '#444', fontFamily: "'IBM Plex Mono', monospace", cursor: 'pointer' }}>cancel</button>
             <button onClick={handleClaim} disabled={claiming} style={{
