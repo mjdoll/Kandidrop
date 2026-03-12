@@ -339,6 +339,7 @@ function Journey() {
     setClaiming(true);
     try {
       await claimKandi({ kandiId, igHandle: ig.trim(), eventName: ev.trim() || 'Unknown Event', city: city.trim() || 'Unknown' });
+       message: message.trim()
       const handle = ig.trim().toLowerCase().replace('@', '');
       window.__kd_user = handle;
       setShowForm(false); setIg(''); setEv(''); setCity('');
