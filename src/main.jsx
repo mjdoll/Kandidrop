@@ -342,7 +342,7 @@ function Journey() {
        message: message.trim()
       const handle = ig.trim().toLowerCase().replace('@', '');
       window.__kd_user = handle;
-      setShowForm(false); setIg(''); setEv(''); setCity(''); setMessage('');
+      setShowForm(false); setIg(''); setEv(''); setCity(''); setMessage('');setMessage('');
       await loadData();
     } catch (err) { console.error(err); setError('Failed to claim. Try again.'); } finally { setClaiming(false); }
   }
