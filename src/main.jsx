@@ -439,6 +439,16 @@ function Journey() {
               <div style={{ paddingBottom: '1.1rem', paddingTop: '0.2rem' }}>
                 <a href={`https://instagram.com/${h.ig_handle}`} target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', fontFamily: "'Permanent Marker', cursive", fontSize: '0.88rem', textDecoration: 'none' }}>@{h.ig_handle}</a>
                 <div style={{ color: '#3a3a4a', fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.62rem', marginTop: '3px' }}>{h.event_name} · {h.city} · {timeAgo(h.claimed_at)}</div>
+                 {h.message && (
+  <div style={{
+    marginTop: '4px',
+    fontSize: '0.75rem',
+    opacity: 0.85,
+    fontStyle: 'italic'
+  }}>
+    “{h.message}”
+  </div>
+)}
                 {h.photo_url && <img src={h.photo_url} alt="" style={{ width: '100%', maxWidth: '250px', height: '120px', objectFit: 'cover', borderRadius: '10px', marginTop: '0.5rem', border: '1px solid #1a1a2a' }} />}
               </div>
             </div>
