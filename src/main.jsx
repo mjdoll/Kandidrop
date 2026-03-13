@@ -375,6 +375,12 @@ async function uploadClaimPhoto(file, kandiId) {
     setClaiming(true);
     try {
   const photoUrl = await uploadClaimPhoto(photoFile, kandiId);
+       console.log('photoFile:', photoFile);
+console.log('photoUrl from upload:', photoUrl);
+
+if (photoFile && !photoUrl) {
+  throw new Error('Photo uploaded but public URL came back null');
+}
 console.log('photoUrl from upload:', photoUrl);
 await claimKandi({
   kandiId,
