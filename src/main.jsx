@@ -336,17 +336,36 @@ function Journey() {
       if (currentUser) setAlreadyClaimed(await hasUserClaimed(kandiId, currentUser));
     } catch (err) {   console.error(err);   setError(err?.message || JSON.stringify(err) || 'Kandi not found'); } finally {   setLoading(false); }
   }
+async function uploadClaimPhoto(file, kandiId) {
+  if (!file) return null;
 
+  const ext = file.name.split('.').pop();
+  const fileName = `${kandiId}-${Date.now()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('kandi-photos')
+    .upload(fileName, file);
+
+  if (uploadError) throw uploadError;
+
+  const { data } = supabase.storage
+    .from('kandi-photos')
+    .getPublicUrl(fileName);
+
+  return data.publicUrl;
+}
   async function handleClaim() {
     if (!ig.trim()) return;
     setClaiming(true);
     try {
+       const photoUrl = await uploadClaimPhoto(photoFile, kandiId);
       await claimKandi({
   kandiId,
   igHandle: ig.trim(),
-  eventName: ev.trim() || 'Unknown Event',
-  city: city.trim() || 'Unknown',
-  message: message.trim()
+  eventName: ev.trim(),
+  city: city.trim(),
+  message: message.trim(),
+  photo_url: photoUrl
 });
       const handle = ig.trim().toLowerCase().replace('@', '');
       window.__kd_user = handle;
