@@ -227,6 +227,7 @@ function Browse() {
   const [kandis, setKandis] = useState([]);
   const [chains, setChains] = useState({});
   const [loading, setLoading] = useState(true);
+   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const currentUser = window.__kd_user || null;
 
