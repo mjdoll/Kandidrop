@@ -33,7 +33,7 @@ async function getChain(kandiId) {
   return data;
 }
 
-async function claimKandi({ kandiId, igHandle, eventName, city }) {
+async function claimKandi({ kandiId, igHandle, eventName, city, message }) {
   const handle = igHandle.toLowerCase().replace('@', '');
   const { data: claim, error: claimError } = await supabase.from('claims').insert({
     kandi_id: kandiId, ig_handle: handle, event_name: eventName, city: city,
