@@ -102,7 +102,20 @@ function BeadString({ colors = [], size = 10, glow = false }) {
     </div>
   );
 }
+const polaroidStyle = {
+  background: "#fff",
+  padding: "12px 12px 36px 12px",
+  borderRadius: "8px",
+  boxShadow: "0 10px 22px rgba(0,0,0,0.45)",
+  display: "inline-block",
+  maxWidth: "320px"
+};
 
+const polaroidImg = {
+  width: "100%",
+  borderRadius: "4px",
+  display: "block"
+};
 function Neon({ children, color = '#00f5d4', size = '1rem', as: Tag = 'span', style = {} }) {
   return (
     <Tag style={{
