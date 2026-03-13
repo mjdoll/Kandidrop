@@ -358,14 +358,15 @@ async function uploadClaimPhoto(file, kandiId) {
     if (!ig.trim()) return;
     setClaiming(true);
     try {
-       const photoUrl = await uploadClaimPhoto(photoFile, kandiId);
-      await claimKandi({
+  const photoUrl = await uploadClaimPhoto(photoFile, kandiId);
+
+await claimKandi({
   kandiId,
   igHandle: ig.trim(),
-  eventName: ev.trim(),
-  city: city.trim(),
+  eventName: ev.trim() || 'Unknown Event',
+  city: city.trim() || 'Unknown',
   message: message.trim(),
-  photo_url: photoUrl
+  photoUrl
 });
 setPhotoFile(null);        
       const handle = ig.trim().toLowerCase().replace('@', '');
