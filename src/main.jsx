@@ -104,9 +104,9 @@ function BeadString({ colors = [], size = 10, glow = false }) {
 }
 const polaroidStyle = {
   background: "#ffffff",
-  padding: "12px 12px 40px 12px",
+  padding: "16px 16px 60px 16px",
   borderRadius: "4px",
-  boxShadow: "0 12px 24px rgba(0,0,0,0.45)",
+  boxShadow: "0 14px 30px rgba(0,0,0,0.45)",
   display: "inline-block"
 };
 
