@@ -206,7 +206,7 @@ function Splash() {
       minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       background: 'radial-gradient(ellipse at 30% 20%, #1a0030 0%, #0a0a12 50%, #000 100%)',
       padding: '2rem', textAlign: 'center', opacity: show ? 1 : 0, transition: 'opacity 1s ease',
-      position: 'relative', overflow: 'hidden',
+      position: 'relative', overflow: 'visible',
     }}>
       {[...Array(14)].map((_, i) => (
         <div key={i} style={{
