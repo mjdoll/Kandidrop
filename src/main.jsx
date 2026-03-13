@@ -103,12 +103,11 @@ function BeadString({ colors = [], size = 10, glow = false }) {
   );
 }
 const polaroidStyle = {
-  background: "#fff",
-  padding: "12px 12px 36px 12px",
-  borderRadius: "8px",
-  boxShadow: "0 10px 22px rgba(0,0,0,0.45)",
-  display: "inline-block",
-  maxWidth: "320px"
+  background: "#ffffff",
+  padding: "12px 12px 40px 12px",
+  borderRadius: "4px",
+  boxShadow: "0 12px 24px rgba(0,0,0,0.45)",
+  display: "inline-block"
 };
 
 const polaroidImg = {
