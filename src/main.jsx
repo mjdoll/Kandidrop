@@ -343,22 +343,32 @@ function Journey() {
     } catch (err) {   console.error(err);   setError(err?.message || JSON.stringify(err) || 'Kandi not found'); } finally {   setLoading(false); }
   }
 async function uploadClaimPhoto(file, kandiId) {
-  if (!file) return null;
+  if (!file) {
+    console.log('No file selected');
+    return null;
+  }
 
   const ext = file.name.split('.').pop();
   const fileName = `${kandiId}-${Date.now()}.${ext}`;
+
+  console.log('Uploading file:', fileName);
 
   const { error: uploadError } = await supabase.storage
     .from('kandi-photos')
     .upload(fileName, file);
 
-  if (uploadError) throw uploadError;
+  if (uploadError) {
+    console.log('Upload error:', uploadError);
+    throw uploadError;
+  }
 
-  const { data } = supabase.storage
+  const { data: publicData } = supabase.storage
     .from('kandi-photos')
     .getPublicUrl(fileName);
 
-  return data.publicUrl;
+  console.log('Public URL data:', publicData);
+
+  return publicData?.publicUrl || null;
 }
   async function handleClaim() {
     if (!ig.trim()) return;
