@@ -367,6 +367,7 @@ async function uploadClaimPhoto(file, kandiId) {
   message: message.trim(),
   photo_url: photoUrl
 });
+setPhotoFile(null);        
       const handle = ig.trim().toLowerCase().replace('@', '');
       window.__kd_user = handle;
       setShowForm(false); setIg(''); setEv(''); setCity(''); setMessage('');
