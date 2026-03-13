@@ -104,16 +104,18 @@ function BeadString({ colors = [], size = 10, glow = false }) {
 }
 const polaroidStyle = {
   background: "#ffffff",
-  padding: "16px 16px 60px 16px",
+  padding: "14px 14px 55px 14px",
   borderRadius: "4px",
-  boxShadow: "0 14px 30px rgba(0,0,0,0.45)",
-  display: "inline-block"
+  boxShadow: "0 16px 30px rgba(0,0,0,0.45)",
+  display: "inline-block",
+  width: "230px"
 };
-
 const polaroidImg = {
   width: "100%",
-  borderRadius: "4px",
-  display: "block"
+  height: "160px",
+  objectFit: "cover",
+  display: "block",
+  borderRadius: "3px"
 };
 function Neon({ children, color = '#00f5d4', size = '1rem', as: Tag = 'span', style = {} }) {
   return (
