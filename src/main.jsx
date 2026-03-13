@@ -35,6 +35,7 @@ async function getChain(kandiId) {
 
 async function claimKandi({ kandiId, igHandle, eventName, city, message, photoUrl }) {
   const handle = igHandle.toLowerCase().replace('@', '');
+   console.log('photoUrl entering insert:', photoUrl);
   const { data: claim, error: claimError } = await supabase.from('claims').insert({
   kandi_id: kandiId,
   ig_handle: handle,
