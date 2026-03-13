@@ -321,6 +321,7 @@ function Journey() {
   const [ev, setEv] = useState('');
   const [city, setCity] = useState('');
   const [message, setMessage] = useState('');
+  const [copied, setCopied] = useState(false); 
   const [error, setError] = useState(null);
   const currentUser = window.__kd_user || null;
 
