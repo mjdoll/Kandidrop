@@ -402,6 +402,25 @@ function Journey() {
             borderRadius: '10px', padding: '0.5rem 1.5rem', color: '#fff', fontFamily: "'IBM Plex Mono', monospace",
             fontWeight: 700, fontSize: '0.72rem', textDecoration: 'none', letterSpacing: '1px',
           }}>CONNECT ON IG →</a>
+          <button
+  onClick={async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  }}
+  style={{
+    marginTop: '0.6rem',
+    background: 'transparent',
+    border: '1px solid #444',
+    borderRadius: '12px',
+    padding: '0.5rem 0.8rem',
+    color: '#aaa',
+    fontSize: '0.7rem',
+    cursor: 'pointer'
+  }}
+>
+  {copied ? 'Copied!' : 'Copy kandi link'}
+</button> 
         </div>
       )}
 
