@@ -520,10 +520,9 @@ setPhotoFile(null);
           <Field value={ev} onChange={setEv} placeholder="Event (e.g. EDC, Coachella)" />
           <Field value={city} onChange={setCity} placeholder="City" mb="1rem" />
           <Field value={message} onChange={setMessage} placeholder="Drop your message 💜" mb="1rem" />
-<div style={{marginBottom:'0.4rem', color:'#aaa', fontSize:'0.7rem'}}>
-   {Add your kandi pic 📸}
+<div style={{ marginBottom: '0.4rem', color: '#aaa', fontSize: '0.7rem' }}>
+  {'Add your kandi pic 📸'}
 </div>
-
 <input
   type="file"
   accept="image/*"
