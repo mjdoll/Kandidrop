@@ -631,7 +631,17 @@ function Collection() {
                 onClick={() => navigate(`/k/${claim.kandi_id}`)}>
                 {claim.photo_url ? (
                   <div style={{ position: 'relative' }}>
-                    <img src={claim.photo_url} alt="" style={{ width: '100%', height: '200px', objectFit: 'cover', display: 'block' }} />
+                    <div
+  style={{
+    ...polaroidStyle,
+    transform: `rotate(${Math.random() * 6 - 3}deg)`
+  }}
+>
+ <img
+  src={claim.photo_url}
+  style={{ ...polaroidImg, height: '200px', objectFit: 'cover' }}
+/>
+</div>
                     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, #0d0d18ee)', padding: '2rem 1rem 0.8rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <BeadString colors={colors} size={6} />
