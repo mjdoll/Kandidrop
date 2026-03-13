@@ -364,7 +364,7 @@ async function uploadClaimPhoto(file, kandiId) {
     setClaiming(true);
     try {
   const photoUrl = await uploadClaimPhoto(photoFile, kandiId);
-
+console.log('photoUrl from upload:', photoUrl);
 await claimKandi({
   kandiId,
   igHandle: ig.trim(),
