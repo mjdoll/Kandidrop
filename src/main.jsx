@@ -423,7 +423,7 @@ setPhotoFile(null);
             display: 'inline-block', marginTop: '0.8rem', background: 'linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)',
             borderRadius: '10px', padding: '0.5rem 1.5rem', color: '#fff', fontFamily: "'IBM Plex Mono', monospace",
             fontWeight: 700, fontSize: '0.72rem', textDecoration: 'none', letterSpacing: '1px',
-         }}}>CONNECT ON IG →</a>
+         }}>CONNECT ON IG →</a>
 <button
   onClick={async () => {
     await navigator.clipboard.writeText(window.location.href);
