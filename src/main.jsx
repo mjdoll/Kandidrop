@@ -626,7 +626,7 @@ function Collection() {
             const k = claim.kandis;
             const colors = k?.bead_colors || ['#ff006e', '#00f5d4', '#7b2ff7'];
             return (
-              <div key={claim.id} style={{ background: 'linear-gradient(135deg, #0d0d18, #150025)', borderRadius: '20px', overflow: 'hidden', border: '1px solid #7b2ff712', cursor: 'pointer' }}
+              <div key={claim.id} style={{ background: 'linear-gradient(135deg, #0d0d18, #150025)', borderRadius: '20px', overflow: 'visible', border: '1px solid #7b2ff712', cursor: 'pointer' }}
                 onClick={() => navigate(`/k/${claim.kandi_id}`)}>
                 {claim.photo_url ? (
                   <div style={{ position: 'relative' }}>
