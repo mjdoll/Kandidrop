@@ -637,7 +637,29 @@ function Collection() {
     transform: `rotate(${Math.random() * 6 - 3}deg)`
   }}
 >
-  <img src={claim.photo_url} style={polaroidImg} />
+  <div
+  style={{
+    background: "#fff",
+    padding: "14px 14px 54px 14px",
+    borderRadius: "4px",
+    boxShadow: "0 16px 30px rgba(0,0,0,0.45)",
+    display: "inline-block",
+    transform: "rotate(-2deg)",
+    marginTop: "0.4rem"
+  }}
+>
+  <img
+    src={claim.photo_url}
+    alt=""
+    style={{
+      width: "220px",
+      height: "160px",
+      objectFit: "cover",
+      display: "block",
+      borderRadius: "2px"
+    }}
+  />
+</div>
 </div>
                     <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, #0d0d18ee)', padding: '2rem 1rem 0.8rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
